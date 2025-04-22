@@ -19,8 +19,12 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          sudo chmod -R 777 $GITHUB_WORKSPACE
           npx playwright install --with-deps
+          
+      - name: Fix permissions
+        run: |
+          sudo chmod -R 777 $GITHUB_WORKSPACE/node_modules
+          sudo chmod -R 777 $GITHUB_WORKSPACE/node_modules/.bin
 
       - name: Run tests
         run: npx playwright test
@@ -33,3 +37,4 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
+          retention-days: 3
