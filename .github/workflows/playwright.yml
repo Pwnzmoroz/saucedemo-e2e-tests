@@ -16,22 +16,22 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install Playwright globally
         run: |
-          npm install
-          npx playwright install --with-deps
-          
-      - name: Fix permissions
-        run: |
-          sudo chmod -R 777 $GITHUB_WORKSPACE/node_modules
-          sudo chmod -R 777 $GITHUB_WORKSPACE/node_modules/.bin
+          npm install -g @playwright/test
+          playwright install --with-deps
 
-      - name: Run tests
-        run: npx playwright test
+      - name: Install project dependencies
+        run: npm install
+
+      - name: Run tests with direct path
+        run: |
+          export PATH=$PATH:$(npm bin)
+          npx playwright test
         env:
           CI: true
 
-      - name: Upload report
+      - name: Upload HTML report
         if: always()
         uses: actions/upload-artifact@v4
         with:
