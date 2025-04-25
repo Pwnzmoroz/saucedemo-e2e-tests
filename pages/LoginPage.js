@@ -1,22 +1,26 @@
-class LoginPage {
-    constructor(page) {
-      this.page = page;
-      this.usernameField = page.locator('#user-name');
-      this.passwordField = page.locator('#password');
-      this.loginButton = page.locator('#login-button');
-      this.errorMessage = page.locator('[data-test="error"]');
-    }
-  
-    async navigate() {
-      await this.page.goto('https://www.saucedemo.com');
-    }
-  
-    async login(username, password) {
-      await this.usernameField.fill(username);
-      await this.passwordField.fill(password);
-      await this.loginButton.click();
-    }
+// pages/loginPage.js
+
+export class LoginPage {
+  constructor(page) {
+    this.page = page;
+    this.usernameInput = page.locator('#user-name');
+    this.passwordInput = page.locator('#password');
+    this.loginButton = page.locator('#login-button');
+    this.errorMessage = page.locator('[data-test="error"]');
   }
-  
-  module.exports = { LoginPage };
+
+  async goto() {
+    await this.page.goto('/');
+  }
+
+  async login(username, password) {
+    await this.usernameInput.fill(username);
+    await this.passwordInput.fill(password);
+    await this.loginButton.click();
+  }
+
+  async getErrorMessage() {
+    return await this.errorMessage.textContent();
+  }
+}
   
